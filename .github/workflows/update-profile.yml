@@ -1,0 +1,52 @@
+name: Update profile
+
+on:
+  schedule:
+    - cron: '17 1 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: profile-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out profile
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Check out renderer
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          repository: pedrocatalao/github-cool-readme
+          ref: aa1708efe52367eff2e01679392312842f1730dc
+          path: .renderer
+          persist-credentials: false
+      - name: Set up Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Install renderer dependencies
+        run: npm ci --omit=dev --ignore-scripts --no-audit --no-fund --prefix .renderer
+      - name: Check calculation rules
+        run: node --test tests/*.test.mjs
+      - name: Update cards and README
+        env:
+          PROFILE_TOKEN: ${{ secrets.PROFILE_TOKEN }}
+          PROFILE_LANGUAGE_EXCLUSIONS: ${{ secrets.PROFILE_LANGUAGE_EXCLUSIONS }}
+        run: node scripts/update-profile.mjs
+      - name: Commit updated profile
+        run: |
+          git add README.md assets/*.svg
+          if git diff --cached --quiet; then
+            echo "The profile is current."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Update profile statistics'
+          git push

@@ -1,0 +1,5 @@
+.renderer/
+.cache/
+node_modules/
+.env*
+*.log
