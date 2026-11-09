@@ -11,7 +11,7 @@ Set these repository Actions secrets:
 - `PROFILE_TOKEN`: a dedicated classic personal access token owned by the profile owner. It requires `repo`, `read:org`, and `read:user` to include accessible private and organization contributions. Authorize it for organizations that require SSO. The classic `repo` scope also grants repository write access, although this script only reads data with this token.
 - `PROFILE_LANGUAGE_EXCLUSIONS`: a JSON array of private repository names to omit from language statistics. Keep these names out of tracked files.
 
-The workflow uses its separate `GITHUB_TOKEN` to commit profile updates. Replace `PROFILE_TOKEN` before it expires. GitHub may disable schedules in public repositories after extended inactivity. Check the workflow status if daily updates stop.
+The workflow uses its separate `GITHUB_TOKEN` to commit profile updates. The configured token has no expiration. Replace `PROFILE_TOKEN` if you revoke or rotate the credential. GitHub may disable schedules in public repositories after extended inactivity. Check the workflow status if daily updates stop.
 
 ## Statistics
 
