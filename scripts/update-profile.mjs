@@ -54,7 +54,7 @@ async function update() {
     }
   }
 
-  const version = snapshot.generatedAt.slice(0, 10);
+  const version = snapshot.generatedAt;
   const cardsInOrder = [
     ['footprint', 'GitHub stats: Year and All time'],
     ['languages', 'Most used languages'],

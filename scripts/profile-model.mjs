@@ -8,14 +8,8 @@ configuration.look.color = 'amber';
 configuration.cards.summary.ring = 'github';
 configuration.cards.languages.count = 5;
 configuration.cards.contributions.open = false;
-configuration.cards.contributions.pin = [
-  'apify/crawlee',
-  'Mathics3/mathics-core',
-  'microsoft/nvx',
-  'JuliaDiff/ChainRules.jl',
-  'debugmcp/mcp-debugger',
-  'piplabs/story',
-];
+configuration.cards.contributions.count = 6;
+configuration.cards.contributions.pin = [];
 
 export function buildModel(snapshot, privateExclusions) {
   const config = structuredClone(configuration);

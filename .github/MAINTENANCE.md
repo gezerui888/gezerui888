@@ -2,7 +2,7 @@
 
 The Update profile workflow runs daily at 01:17 UTC (09:17 Asia/Shanghai). GitHub can delay scheduled runs. Run it manually from Actions when needed.
 
-The workflow refreshes the eight SVG assets and README image versions. It preserves the introduction, two-row layout, featured repositories, and descending star order.
+The workflow refreshes the eight SVG assets and README image versions. It preserves the introduction and two-row layout. Each refresh uses a timestamp in image URLs, including manual runs on the same day.
 
 ## Credentials
 
@@ -19,7 +19,7 @@ The summary includes accessible private and organization contributions. Year cov
 
 Language scores multiply each repository's language proportions by attributed all-time commits. They estimate activity rather than authored lines. The public website and the private exclusions do not affect summary or streak totals.
 
-The contribution card lists merged PRs in public projects, including membership organizations. The six featured repositories remain pinned and sort by stars. Stars earned counts owned public repositories, excluding forks.
+The contribution card selects the six most starred public repositories with merged PRs by the profile owner. It includes membership organizations and excludes personal repositories. No repositories are pinned. New eligible repositories enter the card when their stars place them in the top six. The card groups PRs by repository and sorts repositories by descending stars. Stars earned counts owned public repositories, excluding forks.
 
 Raw API responses stay in memory. Published files contain aggregate statistics and public repository names. Restricted contributions have no repository details and cannot enter the language calculation.
 

@@ -60,3 +60,42 @@ test('the website exclusion applies even when it has attributed commits', () => 
   assert.ok(!model.languages.some(item => item.name === 'HTML'));
   assert.equal(model.languages.reduce((sum, item) => sum + item.percent, 0), 100);
 });
+
+test('new merged contributions enter the six most starred repositories automatically', () => {
+  const snapshot = fixture();
+  for (const [name, stars] of [
+    ['Mathics3/mathics-core', 2000],
+    ['microsoft/nvx', 1000],
+    ['JuliaDiff/ChainRules.jl', 800],
+    ['debugmcp/mcp-debugger', 500],
+    ['AlexsJones/llmfit', 38900],
+    ['adbar/trafilatura', 7100],
+    ['Gaurav-Gosain/tuios', 6500],
+    ['kenn-io/agentsview', 6400],
+  ]) {
+    const key = name.toLowerCase();
+    snapshot.repos[key] = {
+      ...snapshot.repos['apify/crawlee'], nameWithOwner: name,
+      owner: key.split('/')[0], stars,
+    };
+    snapshot.pullRequests.push({
+      repo: key, state: key === 'alexsjones/llmfit' ? 'OPEN' : 'MERGED',
+      createdAt: '2026-11-10', mergedAt: key === 'alexsjones/llmfit' ? null : '2026-11-11',
+    });
+  }
+  assert.ok(!buildModel(snapshot, []).contributions.some(item => item.repo === 'AlexsJones/llmfit'));
+
+  const newlyMerged = snapshot.pullRequests.find(pr => pr.repo === 'alexsjones/llmfit');
+  newlyMerged.state = 'MERGED';
+  newlyMerged.mergedAt = '2026-11-11';
+  assert.deepEqual(buildModel(snapshot, []).contributions.map(item => item.repo), [
+    'AlexsJones/llmfit', 'apify/crawlee', 'adbar/trafilatura',
+    'Gaurav-Gosain/tuios', 'kenn-io/agentsview', 'Mathics3/mathics-core',
+  ]);
+
+  snapshot.repos['piplabs/story'].stars = 50000;
+  assert.deepEqual(buildModel(snapshot, []).contributions.map(item => item.repo), [
+    'piplabs/story', 'AlexsJones/llmfit', 'apify/crawlee',
+    'adbar/trafilatura', 'Gaurav-Gosain/tuios', 'kenn-io/agentsview',
+  ]);
+});
