@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="195" viewBox="0 0 400 195" fill="none" role="img" aria-labelledby="title desc">
 <title id="title">Most used languages</title>
-<desc id="desc">Python 33.5%, Go 32.7%, TypeScript 9.7%, Solidity 5.7%, HTML 4.6%, Other 13.8%</desc>
+<desc id="desc">Python 33.4%, Go 31.6%, TypeScript 9.5%, HTML 6.3%, Solidity 5.5%, Other 13.7%</desc>
 <style>
   text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif; fill: #1f2328; }
   .label { font-size: 14px; }
@@ -22,11 +22,11 @@
 <rect x="0.5" y="0.5" width="399" height="194" rx="6" fill="none" stroke="none"/>
 <text x="20" y="28" class="col">MOST USED LANGUAGES</text>
 <mask id="bar"><rect class="grow" x="20" y="48" width="360" height="10" rx="5" fill="#fff"/></mask>
-<g mask="url(#bar)"><rect x="20.00" y="48" width="117.26" height="10" fill="#3572A5"/><rect x="139.26" y="48" width="114.61" height="10" fill="#00ADD8"/><rect x="255.87" y="48" width="33.79" height="10" fill="#3178c6"/><rect x="291.67" y="48" width="19.83" height="10" fill="#AA6746"/><rect x="313.50" y="48" width="16.10" height="10" fill="#e34c26"/><rect x="331.60" y="48" width="48.40" height="10" fill="#8c959f"/></g>
-<g transform="translate(20 84)"><g class="fade" style="animation-delay: 200ms"><circle cx="5" cy="6" r="5" fill="#3572A5"/><text x="16" y="11" class="label">Python <tspan class="secondary">33.5%</tspan></text></g></g>
-<g transform="translate(200 84)"><g class="fade" style="animation-delay: 270ms"><circle cx="5" cy="6" r="5" fill="#00ADD8"/><text x="16" y="11" class="label">Go <tspan class="secondary">32.7%</tspan></text></g></g>
-<g transform="translate(20 116)"><g class="fade" style="animation-delay: 340ms"><circle cx="5" cy="6" r="5" fill="#3178c6"/><text x="16" y="11" class="label">TypeScript <tspan class="secondary">9.7%</tspan></text></g></g>
-<g transform="translate(200 116)"><g class="fade" style="animation-delay: 410ms"><circle cx="5" cy="6" r="5" fill="#AA6746"/><text x="16" y="11" class="label">Solidity <tspan class="secondary">5.7%</tspan></text></g></g>
-<g transform="translate(20 148)"><g class="fade" style="animation-delay: 480ms"><circle cx="5" cy="6" r="5" fill="#e34c26"/><text x="16" y="11" class="label">HTML <tspan class="secondary">4.6%</tspan></text></g></g>
-<g transform="translate(200 148)"><g class="fade" style="animation-delay: 550ms"><circle cx="5" cy="6" r="5" fill="#8c959f"/><text x="16" y="11" class="label">Other <tspan class="secondary">13.8%</tspan></text></g></g>
+<g mask="url(#bar)"><rect x="20.00" y="48" width="116.95" height="10" fill="#3572A5"/><rect x="138.95" y="48" width="110.54" height="10" fill="#00ADD8"/><rect x="251.49" y="48" width="33.32" height="10" fill="#3178c6"/><rect x="286.81" y="48" width="22.18" height="10" fill="#e34c26"/><rect x="310.99" y="48" width="19.13" height="10" fill="#AA6746"/><rect x="332.12" y="48" width="47.88" height="10" fill="#8c959f"/></g>
+<g transform="translate(20 84)"><g class="fade" style="animation-delay: 200ms"><circle cx="5" cy="6" r="5" fill="#3572A5"/><text x="16" y="11" class="label">Python <tspan class="secondary">33.4%</tspan></text></g></g>
+<g transform="translate(200 84)"><g class="fade" style="animation-delay: 270ms"><circle cx="5" cy="6" r="5" fill="#00ADD8"/><text x="16" y="11" class="label">Go <tspan class="secondary">31.6%</tspan></text></g></g>
+<g transform="translate(20 116)"><g class="fade" style="animation-delay: 340ms"><circle cx="5" cy="6" r="5" fill="#3178c6"/><text x="16" y="11" class="label">TypeScript <tspan class="secondary">9.5%</tspan></text></g></g>
+<g transform="translate(200 116)"><g class="fade" style="animation-delay: 410ms"><circle cx="5" cy="6" r="5" fill="#e34c26"/><text x="16" y="11" class="label">HTML <tspan class="secondary">6.3%</tspan></text></g></g>
+<g transform="translate(20 148)"><g class="fade" style="animation-delay: 480ms"><circle cx="5" cy="6" r="5" fill="#AA6746"/><text x="16" y="11" class="label">Solidity <tspan class="secondary">5.5%</tspan></text></g></g>
+<g transform="translate(200 148)"><g class="fade" style="animation-delay: 550ms"><circle cx="5" cy="6" r="5" fill="#8c959f"/><text x="16" y="11" class="label">Other <tspan class="secondary">13.7%</tspan></text></g></g>
 </svg>
