@@ -8,7 +8,7 @@ configuration.look.color = 'amber';
 configuration.cards.summary.ring = 'github';
 configuration.cards.languages.count = 5;
 configuration.cards.contributions.open = false;
-configuration.cards.contributions.count = 6;
+configuration.cards.contributions.count = 15;
 configuration.cards.contributions.pin = [];
 
 export function buildModel(snapshot, privateExclusions) {

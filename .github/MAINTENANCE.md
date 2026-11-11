@@ -15,14 +15,18 @@ The workflow uses its separate `GITHUB_TOKEN` to commit profile updates. The con
 
 ## Statistics
 
+Every run fetches fresh GitHub data. The PR collector reads every page of the account’s PR history, then filters merged PRs. It does not use search results or a previous snapshot.
+
 The summary includes accessible private and organization contributions. Year covers the rolling contribution-calendar window. All time covers annual windows since account creation.
 
 Language scores multiply each repository's language proportions by attributed all-time commits. They estimate activity rather than authored lines. The public website and the private exclusions do not affect summary or streak totals.
 
-The contribution card selects the six most starred public repositories with merged PRs by the profile owner. It includes membership organizations and excludes personal repositories. No repositories are pinned. New eligible repositories enter the card when their stars place them in the top six. The card groups PRs by repository and sorts repositories by descending stars. Stars earned counts owned public repositories, excluding forks.
+The contribution card selects the fifteen most starred public repositories with merged PRs by the profile owner. It includes membership organizations and excludes personal repositories. No repositories are pinned. New eligible repositories enter the card when their stars place them in the top fifteen. The card groups PRs by repository and sorts repositories by descending stars. It scrolls through five groups of three repositories when fifteen qualify. Stars earned counts owned public repositories, excluding forks.
+
+Streaks, active days, and best-day and best-month values use the latest rolling 365-day contribution calendar. The longest streak covers that window.
 
 Raw API responses stay in memory. Published files contain aggregate statistics and public repository names. Restricted contributions have no repository details and cannot enter the language calculation.
 
 ## Verification
 
-The renderer and workflow actions use fixed commit references. Tests check language exclusions, organization contributions, private repository filtering, and public star totals. Generation stops when the API reports incomplete commit or language coverage. Failed runs preserve the published profile.
+The renderer and workflow actions use fixed commit references. Tests check automatic top-fifteen selection, language exclusions, organization contributions, private repository filtering, and updates to every statistical card. Generation stops when the API reports incomplete commit or language coverage. Failed runs preserve the published profile.

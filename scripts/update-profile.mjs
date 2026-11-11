@@ -74,6 +74,7 @@ async function update() {
     await writeFile(`assets/${name.replace('summary-', 'footprint-')}`, svg);
   }
   await writeFile('README.md', readme);
+  console.log(`Read ${snapshot.pullRequests.length} PRs across all pages. Displayed ${model.contributions.length} repositories by stars.`);
   console.log(`Updated eight profile cards for ${version}.`);
   console.log(`Restricted contributions without repository details: ${snapshot.allTime.reduce((sum, window) => sum + window.restricted, 0)}.`);
 }

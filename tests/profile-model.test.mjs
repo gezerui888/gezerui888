@@ -61,41 +61,65 @@ test('the website exclusion applies even when it has attributed commits', () => 
   assert.equal(model.languages.reduce((sum, item) => sum + item.percent, 0), 100);
 });
 
-test('new merged contributions enter the six most starred repositories automatically', () => {
+test('new merged contributions enter the fifteen most starred repositories automatically', () => {
   const snapshot = fixture();
-  for (const [name, stars] of [
-    ['Mathics3/mathics-core', 2000],
-    ['microsoft/nvx', 1000],
-    ['JuliaDiff/ChainRules.jl', 800],
-    ['debugmcp/mcp-debugger', 500],
-    ['AlexsJones/llmfit', 38900],
-    ['adbar/trafilatura', 7100],
-    ['Gaurav-Gosain/tuios', 6500],
-    ['kenn-io/agentsview', 6400],
-  ]) {
-    const key = name.toLowerCase();
+  for (let rank = 1; rank <= 17; rank++) {
+    const key = `external/project-${rank}`;
     snapshot.repos[key] = {
-      ...snapshot.repos['apify/crawlee'], nameWithOwner: name,
-      owner: key.split('/')[0], stars,
+      ...snapshot.repos['apify/crawlee'], nameWithOwner: key,
+      owner: 'external', stars: 10000 - rank,
     };
     snapshot.pullRequests.push({
-      repo: key, state: key === 'alexsjones/llmfit' ? 'OPEN' : 'MERGED',
-      createdAt: '2026-11-10', mergedAt: key === 'alexsjones/llmfit' ? null : '2026-11-11',
+      repo: key, state: rank === 1 ? 'OPEN' : 'MERGED',
+      createdAt: '2026-11-10', mergedAt: rank === 1 ? null : '2026-11-11',
     });
   }
-  assert.ok(!buildModel(snapshot, []).contributions.some(item => item.repo === 'AlexsJones/llmfit'));
+  const before = buildModel(snapshot, []).contributions;
+  assert.equal(before.length, 15);
+  assert.ok(!before.some(item => item.repo === 'external/project-1'));
+  assert.equal(before.at(-1).repo, 'external/project-15');
 
-  const newlyMerged = snapshot.pullRequests.find(pr => pr.repo === 'alexsjones/llmfit');
+  const newlyMerged = snapshot.pullRequests.find(pr => pr.repo === 'external/project-1');
   newlyMerged.state = 'MERGED';
   newlyMerged.mergedAt = '2026-11-11';
-  assert.deepEqual(buildModel(snapshot, []).contributions.map(item => item.repo), [
-    'AlexsJones/llmfit', 'apify/crawlee', 'adbar/trafilatura',
-    'Gaurav-Gosain/tuios', 'kenn-io/agentsview', 'Mathics3/mathics-core',
+  snapshot.pullRequests.push({ ...newlyMerged });
+  const after = buildModel(snapshot, []).contributions;
+  assert.deepEqual(after.map(item => item.repo), [
+    'apify/crawlee', ...Array.from({ length: 14 }, (_, i) => `external/project-${i + 1}`),
   ]);
+  assert.equal(after[1].merged, 2);
 
   snapshot.repos['piplabs/story'].stars = 50000;
-  assert.deepEqual(buildModel(snapshot, []).contributions.map(item => item.repo), [
-    'piplabs/story', 'AlexsJones/llmfit', 'apify/crawlee',
-    'adbar/trafilatura', 'Gaurav-Gosain/tuios', 'kenn-io/agentsview',
+  const reordered = buildModel(snapshot, []).contributions;
+  assert.equal(reordered.length, 15);
+  assert.equal(reordered[0].repo, 'piplabs/story');
+  assert.equal(reordered.at(-1).repo, 'external/project-13');
+});
+
+test('new activity updates summary, languages, stars, and streaks', () => {
+  const snapshot = fixture();
+  const exclusions = ['gezerui888/private-example'];
+  const before = buildModel(snapshot, exclusions);
+  const added = { commits: 5, pullRequests: 2, reviews: 1, issues: 1 };
+  snapshot.allTime[0].byRepo['apify/crawlee'] = added;
+  for (const [field, count] of Object.entries(added)) snapshot.allTime[0].totals[field] += count;
+  snapshot.repos['gezerui888/public-example'].stars = 10;
+  snapshot.recentStars['gezerui888/public-example'] = 3;
+  snapshot.calendar.push({ date: '2026-11-10', count: 10 });
+
+  const after = buildModel(snapshot, exclusions);
+  for (const row of after.summary.rows) {
+    const previous = before.summary.rows.find(item => item.key === row.key);
+    assert.equal(row.allTime, previous.allTime + added[row.key]);
+    assert.equal(row.last12Months, previous.last12Months + added[row.key]);
+  }
+  assert.deepEqual(after.summary.stars, { last12Months: 3, allTime: 10 });
+  assert.deepEqual(after.languages.map(({ name, percent }) => ({ name, percent })), [
+    { name: 'Python', percent: 50 }, { name: 'TypeScript', percent: 50 },
   ]);
+  assert.equal(after.summary.activity.activeDays, 3);
+  assert.equal(before.streaks.find(tile => tile.label === 'Current streak').value, '2 days');
+  assert.equal(after.streaks.find(tile => tile.label === 'Current streak').value, '3 days');
+  assert.equal(after.streaks.find(tile => tile.label === 'Longest streak').value, '3 days');
+  assert.equal(after.streaks.find(tile => tile.label.startsWith('Best day')).value, 10);
 });
